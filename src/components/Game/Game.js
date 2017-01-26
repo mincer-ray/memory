@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Timer from '../Timer/Timer'
-import Card from './Card/Card'
+import Board from './Board/Board'
 import styles from './Game.scss'
 
 const http = require('http')
@@ -28,7 +28,7 @@ class Game extends React.Component {
         <div>
           <h1 className={styles.header}>Memory</h1>
           <button></button>
-          <Card value={this.state.gameData.levels[0].cards[0]} />
+          <Board cards={this.state.gameData.levels[0].cards} />
         </div>
       )
     }

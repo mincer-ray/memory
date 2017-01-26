@@ -9,29 +9,40 @@ class Card extends React.Component {
     this.state = {
       value: props.value,
       flipped: false,
+      matched: false,
+      handleCard: props.handleCard,
     }
 
-    this.handleFlip = this.handleFlip.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+    this.flip = this.flip.bind(this)
   }
 
-  handleFlip() {
-    if (this.state.flipped) {
-      this.setState({ flipped: false })
-    } else {
-      this.setState({ flipped: true })
-    }
+  handleClick() {
+    this.state.handleCard(this)
+  }
+
+  flip() {
+    this.setState({ flipped: true })
+  }
+
+  unflip() {
+    this.setState({ flipped: false })
+  }
+
+  matched() {
+    this.setState({ matched: true })
   }
 
   render() {
-    if (this.state.flipped) {
+    if (this.state.flipped || this.state.matched) {
       return (
-        <div className={styles.flipped} onClick={this.handleFlip}>
+        <div className={styles.flipped}>
           {this.state.value}
         </div>
       )
     }
     return (
-      <div className={styles.unflipped} onClick={this.handleFlip}>
+      <div className={styles.unflipped} onClick={this.handleClick}>
       </div>
     )
   }
