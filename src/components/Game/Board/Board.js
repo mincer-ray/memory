@@ -1,5 +1,6 @@
 import React from 'react'
 
+import styles from './styles.scss'
 import Card from '../Card/Card'
 
 class Board extends React.Component {
@@ -11,6 +12,7 @@ class Board extends React.Component {
       values: props.cards,
       cards: [],
       flippedCard: null,
+      clicksOn: true,
     }
 
     this.handleCard = this.handleCard.bind(this)
@@ -51,19 +53,20 @@ class Board extends React.Component {
     if (card.state.value === this.state.flippedCard.state.value) {
       card.matched()
       this.state.flippedCard.matched()
+      this.setState({ flippedCard: null })
     } else {
       this.setState({ clicksOn: false })
       setTimeout(() => {
         card.unflip()
         this.state.flippedCard.unflip()
         this.setState({ flippedCard: null, clicksOn: true })
-      }, '2000')
+      }, '1000')
     }
   }
 
   render() {
     return (
-      <div>
+      <div className={styles.board}>
         { this.state.cards }
       </div>
     )
