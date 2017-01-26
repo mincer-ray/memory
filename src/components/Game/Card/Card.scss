@@ -1,0 +1,14 @@
+.card {
+  width: 50px;
+  height: 100px;
+  border: 1px solid black;
+}
+
+.unflipped {
+  @extend .card;
+  background-color: grey;
+}
+
+.flipped {
+  @extend .card;
+}

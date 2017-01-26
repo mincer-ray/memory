@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
         <div id='root'></div>
         <script src='${clientAssets.main.js}' type="text/javascript"></script>
         <link href="${clientAssets.main.css || ''}" rel="stylesheet" type="text/css"/>
+        <link href="reset.css" rel="stylesheet" type="text/css"/>
       </body>
     </html>
   `)
