@@ -23,20 +23,37 @@ Timer.propTypes = {
   time: React.PropTypes.number,
 }
 
+Timer.defaultProps = {
+  time: 0,
+}
+
 class TimerContainer extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
       secondsElapsed: 0,
+      timerRunning: false,
+    }
+
+    this.endTimer = props.endTimer
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.gameOver && this.state.timerRunning) {
+      this.endTimer(this)
+      this.setState({ timerRunning: false })
+    } else if (newProps.timerRunning && !this.state.timerRunning) {
+      this.start()
+      this.setState({ timerRunning: true })
     }
   }
 
-  componentDidMount() {
+  start() {
     this.interval = setInterval(this.tick.bind(this), 1000)
   }
 
-  componentWillUnmount() {
+  stop() {
     clearInterval(this.interval)
   }
 
@@ -51,6 +68,14 @@ class TimerContainer extends React.Component {
       <Timer time={this.state.secondsElapsed} />
     )
   }
+}
+
+TimerContainer.propTypes = {
+  endTimer: React.PropTypes.func,
+}
+
+TimerContainer.defaultProps = {
+  endTimer: () => {},
 }
 
 export default TimerContainer
