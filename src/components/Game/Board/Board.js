@@ -33,7 +33,7 @@ class Board extends React.Component {
     values.forEach((value, i) => {
       newCards.push(
         <Card
-          key={i + value.charCodeAt(0)}
+          key={`${i}${value.charCodeAt(0)}`}
           value={value}
           handleCard={this.handleCard}
         />,

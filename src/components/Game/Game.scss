@@ -1,9 +1,24 @@
-
-.header {
-  color: #333;
-  font-family: sans-serif;
+.game {
+  width: 250px;
+  margin: auto;
+  padding-top: 50px;
 }
 
-.placeholder {
-  font-style: italic;
+.header {
+  width: 250px;
+  display: block;
+  text-align: center;
+  font-size: 24px;
+  color: #F2F2DF;
+  font-family: sans-serif;
+  margin-bottom: 16px;
+}
+
+.button {
+  font-size: 30px;
+  color: #0D1A29;
+  width: 100px;
+  height: 50px;
+  margin-left: 16px;
+  cursor: pointer;
 }

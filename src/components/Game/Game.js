@@ -49,22 +49,32 @@ class Game extends React.Component {
   render() {
     if (this.state.gameStart) {
       return (
-        <div>
+        <div className={styles.game}>
           <h1 className={styles.header}>Memory</h1>
           <Board cards={this.state.deck} />
         </div>
       )
     } else if (this.state.gameData) {
       return (
-        <div>
+        <div className={styles.game}>
           <h1 className={styles.header}>Memory</h1>
-          <button id="short" onClick={this.newGame}>Short</button>
-          <button id="long" onClick={this.newGame}>Long</button>
+          <button
+            className={styles.button}
+            id="short"
+            onClick={this.newGame}
+          >Short</button>
+          <button
+            className={styles.button}
+            id="long"
+            onClick={this.newGame}
+          >Long</button>
         </div>
       )
     }
     return (
-      <h1>Loading</h1>
+      <div className={styles.game}>
+        <h1 className={styles.header}>Loading</h1>
+      </div>
     )
   }
 }

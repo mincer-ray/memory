@@ -1,8 +1,9 @@
 .card {
   display: flex;
   width: 50px;
-  height: 100px;
-  border: 1px solid black;
+  height: 50px;
+  border: 1px solid #0D1A29;
+  color: #0D1A29;
   border-radius: 5px;
   float: left;
   margin: 5px;
@@ -11,15 +12,15 @@
 }
 
 .face {
-  display: block;
   font-size: 40px;
 }
 
 .unflipped {
   @extend .card;
-  background-color: grey;
+  background-color: #8FC1B3;
 }
 
 .flipped {
   @extend .card;
+  background-color: #F2F2DF;
 }
