@@ -37,15 +37,24 @@ class Card extends React.Component {
     if (this.state.flipped || this.state.matched) {
       return (
         <div className={styles.flipped}>
-          {this.state.value}
+          <p className={styles.face}>{this.state.value}</p>
         </div>
       )
     }
     return (
-      <div className={styles.unflipped} onClick={this.handleClick}>
-      </div>
+      <div className={styles.unflipped} onClick={this.handleClick} />
     )
   }
+}
+
+Card.propTypes = {
+  value: React.PropTypes.string,
+  handleCard: React.PropTypes.func,
+}
+
+Card.defaultProps = {
+  value: '',
+  handleCard: () => {},
 }
 
 export default Card
