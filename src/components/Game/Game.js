@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Timer from '../Timer/Timer'
 import Board from './Board/Board'
 import styles from './Game.scss'
 
