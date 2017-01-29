@@ -90,7 +90,7 @@ class Game extends React.Component {
   render() {
     if (this.state.gameStart) {
       return (
-        <div className={styles.game}>
+        <div className={styles.gameOn}>
           <h1 className={styles.header}>Memory</h1>
           <Board
             cards={this.state.deck}
@@ -103,25 +103,33 @@ class Game extends React.Component {
       )
     } else if (this.state.gameData) {
       return (
-        <div className={styles.game}>
-          <h1 className={styles.header}>Memory</h1>
-          <p className={styles.text}>New Game</p>
-          <button
-            className={styles.button}
-            id="short"
-            onClick={this.newGame}
-          >Short</button>
-          <button
-            className={styles.button}
-            id="long"
-            onClick={this.newGame}
-          >Long</button>
-          <p className={styles.text}>Short Scores</p>
-          <Scores scores={this.state.shortScores} />
-          <p className={styles.text}>Long Scores</p>
-          <Scores scores={this.state.longScores} />
-          <img src={this.state.cardBack} alt="preview" id="preview" />
-          <input type="file" onChange={this.updateCard} />
+        <div className={styles.container}>
+          <div className={styles.customCard}>
+            <p className={styles.text}>Upload a custom card back picture!</p>
+            <img className={styles.cardPreview} src={this.state.cardBack} alt="preview" id="preview" />
+            <label>
+              <input type="file" onChange={this.updateCard} />
+              Choose a file
+            </label>
+          </div>
+          <div className={styles.game}>
+            <h1 className={styles.header}>Memory</h1>
+            <p className={styles.text}>New Game</p>
+            <button
+              className={styles.button}
+              id="short"
+              onClick={this.newGame}
+            >Short</button>
+            <button
+              className={styles.button}
+              id="long"
+              onClick={this.newGame}
+            >Long</button>
+          </div>
+          <div className={styles.highScores}>
+            <Scores scores={this.state.shortScores} title={'Short Scores'} />
+            <Scores scores={this.state.longScores} title="Long Scores" />
+          </div>
         </div>
       )
     }

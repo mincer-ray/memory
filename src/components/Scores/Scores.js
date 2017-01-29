@@ -19,11 +19,12 @@ const Score = ({ data = {} }) => {
   )
 }
 
-const Scores = ({ scores = [] }) => {
+const Scores = ({ scores = [], title = '' }) => {
   const formattedScores = []
   sortScores(scores).forEach(score => formattedScores.push(<Score key={score.id} data={score} />))
   return (
     <table className={styles.scores}>
+      <caption className={styles.text}>{title}</caption>
       <thead>
         <tr>
           <th>Name</th>
