@@ -1,9 +1,23 @@
 import React from 'react'
 
 import Board from './Board/Board'
+import Scores from '../Scores/Scores'
 import styles from './Game.scss'
 
 const http = require('http')
+const firebase = require('firebase')
+
+const config = {
+  apiKey: 'AIzaSyDmc8sMfqvgk9S1xfenmUyAugxTPxf_ymY',
+  authDomain: 'nytmemory.firebaseapp.com',
+  databaseURL: 'https://nytmemory.firebaseio.com',
+  storageBucket: 'nytmemory.appspot.com',
+  messagingSenderId: '665490951583',
+}
+
+firebase.initializeApp(config)
+
+const database = firebase.database()
 
 class Game extends React.Component {
 
@@ -22,11 +36,13 @@ class Game extends React.Component {
     super()
     this.state = {
       gameData: null,
+      highScores: [],
       gameStart: false,
       deck: [],
     }
 
     this.newGame = this.newGame.bind(this)
+    this.resetGame = this.resetGame.bind(this)
   }
 
   componentWillMount() {
@@ -34,16 +50,35 @@ class Game extends React.Component {
       response.setEncoding('utf8')
       response.on('data', data => this.setState({ gameData: JSON.parse(data) }))
     })
+    this.getScores()
+  }
+
+  getScores() {
+    http.get('https://nytmemory.firebaseio.com/scores/short.json?orderBy="time"&limitToLast=5&print=pretty',
+    (response) => {
+      response.setEncoding('utf8')
+      response.on('data', data => this.setState({ shortScores: JSON.parse(data) }))
+    })
+    http.get('https://nytmemory.firebaseio.com/scores/long.json?orderBy="time"&limitToLast=5&print=pretty',
+    (response) => {
+      response.setEncoding('utf8')
+      response.on('data', data => this.setState({ longScores: JSON.parse(data) }))
+    })
   }
 
   newGame(e) {
     if (e.currentTarget.id === 'short') {
       const deck = this.state.gameData.levels[0].cards
-      this.setState({ gameStart: true, deck: this.constructor.shuffleDeck(deck) })
+      this.setState({ gameStart: true, deck: this.constructor.shuffleDeck(deck), gameType: 'short' })
     } else {
       const deck = this.state.gameData.levels[1].cards
-      this.setState({ gameStart: true, deck: this.constructor.shuffleDeck(deck) })
+      this.setState({ gameStart: true, deck: this.constructor.shuffleDeck(deck), gameType: 'long' })
     }
+  }
+
+  resetGame() {
+    this.setState({ gameStart: false })
+    this.getScores()
   }
 
   render() {
@@ -51,13 +86,15 @@ class Game extends React.Component {
       return (
         <div className={styles.game}>
           <h1 className={styles.header}>Memory</h1>
-          <Board cards={this.state.deck} />
+          <Board cards={this.state.deck} database={database} gameType={this.state.gameType} />
+          <button className={styles.button} onClick={this.resetGame}>Reset</button>
         </div>
       )
     } else if (this.state.gameData) {
       return (
         <div className={styles.game}>
           <h1 className={styles.header}>Memory</h1>
+          <p className={styles.text}>New Game</p>
           <button
             className={styles.button}
             id="short"
@@ -68,6 +105,10 @@ class Game extends React.Component {
             id="long"
             onClick={this.newGame}
           >Long</button>
+        <p className={styles.text}>Short Scores</p>
+        <Scores scores={this.state.shortScores} />
+        <p className={styles.text}>Long Scores</p>
+        <Scores scores={this.state.longScores} />
         </div>
       )
     }

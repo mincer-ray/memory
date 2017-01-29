@@ -15,12 +15,16 @@ class Board extends React.Component {
       flippedCard: null,
       clicksOn: true,
       matches: props.cards.length / 2,
+      attempts: 0,
       gameOver: false,
       timerRunning: false,
+      database: props.database,
+      gameType: props.gameType,
     }
 
     this.handleCard = this.handleCard.bind(this)
     this.endTimer = this.endTimer.bind(this)
+    this.recordScore = this.recordScore.bind(this)
   }
 
   componentWillMount() {
@@ -60,13 +64,21 @@ class Board extends React.Component {
       card.matched()
       this.state.flippedCard.matched()
       this.checkForComplete()
-      this.setState({ flippedCard: null, matches: this.state.matches - 1 })
+      this.setState({
+        flippedCard: null,
+        matches: this.state.matches - 1,
+        attempts: this.state.attempts + 1,
+      })
     } else {
       this.setState({ clicksOn: false })
       setTimeout(() => {
         card.unflip()
         this.state.flippedCard.unflip()
-        this.setState({ flippedCard: null, clicksOn: true })
+        this.setState({
+          flippedCard: null,
+          clicksOn: true,
+          attempts: this.state.attempts + 1,
+        })
       }, '1000')
     }
   }
@@ -75,9 +87,17 @@ class Board extends React.Component {
     if (this.state.matches - 1 === 0) this.setState({ gameOver: true })
   }
 
-  endTimer(timer) {
-    timer.stop()
-    this.setState({ finalTime: timer.state.secondsElapsed, timerRunning: false })
+  endTimer(finalTime) {
+    this.setState({ finalTime, timerRunning: false })
+  }
+
+  recordScore() {
+    const name = prompt('enter name for high score').slice(10)
+    this.state.database.ref(`scores/${this.state.gameType}`).push({
+      name,
+      time: this.state.finalTime,
+      attempts: this.state.attempts,
+    })
   }
 
   render() {
@@ -88,9 +108,11 @@ class Board extends React.Component {
           gameOver={this.state.gameOver}
           timerRunning={this.state.timerRunning}
         />
+        <p className={styles.text}>{this.state.attempts} attempted matches</p>
         <div className={styles.board}>
           { this.state.cards }
         </div>
+        <button onClick={this.recordScore}>score</button>
       </div>
     )
   }

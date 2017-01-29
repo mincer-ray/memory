@@ -41,12 +41,17 @@ class TimerContainer extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.gameOver && this.state.timerRunning) {
-      this.endTimer(this)
+      this.endTimer(this.state.secondsElapsed)
+      this.stop()
       this.setState({ timerRunning: false })
     } else if (newProps.timerRunning && !this.state.timerRunning) {
       this.start()
       this.setState({ timerRunning: true })
     }
+  }
+
+  componentWillUnmount() {
+    this.stop()
   }
 
   start() {

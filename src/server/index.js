@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
     <html>
       <head>
         <meta charset="utf-8" />
-        <title>Games Web Code Test</title>
+        <title>Memory Game!</title>
       </head>
       <body>
         <div id='root'></div>
