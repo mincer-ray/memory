@@ -20,6 +20,7 @@ class Board extends React.Component {
       timerRunning: false,
       database: props.database,
       gameType: props.gameType,
+      cardBack: props.cardBack,
     }
 
     this.handleCard = this.handleCard.bind(this)
@@ -40,6 +41,7 @@ class Board extends React.Component {
           key={`${i}${value.charCodeAt(0)}`}
           value={value}
           handleCard={this.handleCard}
+          cardBack={this.state.cardBack}
         />,
       )
     })
@@ -92,7 +94,7 @@ class Board extends React.Component {
   }
 
   recordScore() {
-    const name = prompt('enter name for high score').slice(10)
+    const name = prompt('enter name for high score').slice(0, 10)
     this.state.database.ref(`scores/${this.state.gameType}`).push({
       name,
       time: this.state.finalTime,

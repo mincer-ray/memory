@@ -18,6 +18,7 @@
 .unflipped {
   @extend .card;
   background-color: #8FC1B3;
+  background-size: cover;
 }
 
 .flipped {

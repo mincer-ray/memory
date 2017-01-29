@@ -11,6 +11,7 @@ class Card extends React.Component {
       flipped: false,
       matched: false,
       handleCard: props.handleCard,
+      cardBack: props.cardBack,
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -42,7 +43,7 @@ class Card extends React.Component {
       )
     }
     return (
-      <div className={styles.unflipped} onClick={this.handleClick} />
+      <div className={styles.unflipped} style={{ backgroundImage: `url(${this.props.cardBack})` }} onClick={this.handleClick} />
     )
   }
 }

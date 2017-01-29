@@ -38,11 +38,13 @@ class Game extends React.Component {
       gameData: null,
       highScores: [],
       gameStart: false,
+      cardBack: '',
       deck: [],
     }
 
     this.newGame = this.newGame.bind(this)
     this.resetGame = this.resetGame.bind(this)
+    this.updateCard = this.updateCard.bind(this)
   }
 
   componentWillMount() {
@@ -76,6 +78,10 @@ class Game extends React.Component {
     }
   }
 
+  updateCard(e) {
+    this.setState({ cardBack: window.URL.createObjectURL(e.target.files[0]) })
+  }
+
   resetGame() {
     this.setState({ gameStart: false })
     this.getScores()
@@ -86,7 +92,12 @@ class Game extends React.Component {
       return (
         <div className={styles.game}>
           <h1 className={styles.header}>Memory</h1>
-          <Board cards={this.state.deck} database={database} gameType={this.state.gameType} />
+          <Board
+            cards={this.state.deck}
+            database={database}
+            gameType={this.state.gameType}
+            cardBack={this.state.cardBack}
+          />
           <button className={styles.button} onClick={this.resetGame}>Reset</button>
         </div>
       )
@@ -105,10 +116,12 @@ class Game extends React.Component {
             id="long"
             onClick={this.newGame}
           >Long</button>
-        <p className={styles.text}>Short Scores</p>
-        <Scores scores={this.state.shortScores} />
-        <p className={styles.text}>Long Scores</p>
-        <Scores scores={this.state.longScores} />
+          <p className={styles.text}>Short Scores</p>
+          <Scores scores={this.state.shortScores} />
+          <p className={styles.text}>Long Scores</p>
+          <Scores scores={this.state.longScores} />
+          <img src={this.state.cardBack} alt="preview" id="preview" />
+          <input type="file" onChange={this.updateCard} />
         </div>
       )
     }
