@@ -10,17 +10,15 @@ class Card extends React.Component {
       value: props.value,
       flipped: false,
       matched: false,
-      handleCard: props.handleCard,
     }
 
     this.handleClick = this.handleClick.bind(this)
-    this.flip = this.flip.bind(this)
   }
-
+  // wrap the callback and pass it this so board has a reference to the card
   handleClick() {
-    this.state.handleCard(this)
+    this.props.handleCard(this)
   }
-
+  // card control methods
   flip() {
     this.setState({ flipped: true })
   }
@@ -32,7 +30,7 @@ class Card extends React.Component {
   matched() {
     this.setState({ matched: true })
   }
-
+  // flipped and unflipped cards
   render() {
     if (this.state.flipped || this.state.matched) {
       return (

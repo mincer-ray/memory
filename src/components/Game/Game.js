@@ -6,7 +6,7 @@ import styles from './Game.scss'
 
 const http = require('http')
 const firebase = require('firebase')
-
+// init firebase
 const config = {
   apiKey: 'AIzaSyDmc8sMfqvgk9S1xfenmUyAugxTPxf_ymY',
   authDomain: 'nytmemory.firebaseapp.com',
@@ -20,7 +20,7 @@ firebase.initializeApp(config)
 const database = firebase.database()
 
 class Game extends React.Component {
-
+  // static because doesn't use this
   static shuffleDeck(array) {
     for (let i = array.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1))
@@ -46,7 +46,7 @@ class Game extends React.Component {
     this.resetGame = this.resetGame.bind(this)
     this.updateCard = this.updateCard.bind(this)
   }
-
+  // fetches the gamd data. TODO add a spinner while waiting for response
   componentWillMount() {
     http.get('https://web-code-test-dot-nyt-games-prd.appspot.com/cards.json', (response) => {
       response.setEncoding('utf8')
@@ -54,7 +54,7 @@ class Game extends React.Component {
     })
     this.getScores()
   }
-
+  // seperated firebase gets to keep code clean
   getScores() {
     http.get('https://nytmemory.firebaseio.com/scores/short.json?orderBy="time"&limitToFirst=5&print=pretty',
     (response) => {
@@ -77,7 +77,7 @@ class Game extends React.Component {
       this.setState({ gameStart: true, deck: this.constructor.shuffleDeck(deck), gameType: 'long' })
     }
   }
-
+  // saves reference to path of user image on local machine
   updateCard(e) {
     this.setState({ cardBack: window.URL.createObjectURL(e.target.files[0]) })
   }
@@ -89,6 +89,7 @@ class Game extends React.Component {
 
   render() {
     if (this.state.gameStart) {
+      // render board once game has been started
       return (
         <div className={styles.gameOn}>
           <Board
@@ -98,10 +99,10 @@ class Game extends React.Component {
             cardBack={this.state.cardBack}
             resetGame={this.resetGame}
           />
-          <button className={styles.button} onClick={this.resetGame}>Reset</button>
         </div>
       )
     } else if (this.state.gameData) {
+      // main menu
       return (
         <div className={styles.container}>
           <div className={styles.highScores}>
@@ -133,6 +134,7 @@ class Game extends React.Component {
         </div>
       )
     }
+    // game data not yet recieved
     return (
       <div className={styles.game}>
         <h1 className={styles.header}>Loading</h1>
