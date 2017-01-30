@@ -13,6 +13,8 @@
 
 .face {
   font-size: 40px;
+  -webkit-user-select: none;
+  cursor: default;
 }
 
 .unflipped {

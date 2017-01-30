@@ -9,15 +9,13 @@ export const sortScores = (scores) => {
   return scoreArray.sort((a, b) => a.time - b.time)
 }
 
-const Score = ({ data = {} }) => {
-  return (
-    <tr>
-      <td>{data.name}</td>
-      <td>{data.attempts}</td>
-      <td>{formatTime(data.time)}</td>
-    </tr>
-  )
-}
+const Score = ({ data = {} }) => (
+  <tr>
+    <td>{data.name}</td>
+    <td>{data.attempts}</td>
+    <td>{formatTime(data.time)}</td>
+  </tr>
+)
 
 const Scores = ({ scores = [], title = '' }) => {
   const formattedScores = []

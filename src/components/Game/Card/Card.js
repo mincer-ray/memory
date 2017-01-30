@@ -11,7 +11,6 @@ class Card extends React.Component {
       flipped: false,
       matched: false,
       handleCard: props.handleCard,
-      cardBack: props.cardBack,
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -43,19 +42,19 @@ class Card extends React.Component {
       )
     }
     return (
-      <div className={styles.unflipped} style={{ backgroundImage: `url(${this.props.cardBack})` }} onClick={this.handleClick} />
+      <div
+        className={styles.unflipped}
+        style={{ backgroundImage: `url(${this.props.cardBack})` }}
+        onClick={this.handleClick}
+      />
     )
   }
 }
 
 Card.propTypes = {
-  value: React.PropTypes.string,
-  handleCard: React.PropTypes.func,
-}
-
-Card.defaultProps = {
-  value: '',
-  handleCard: () => {},
+  value: React.PropTypes.string.isRequired,
+  handleCard: React.PropTypes.func.isRequired,
+  cardBack: React.PropTypes.string.isRequired,
 }
 
 export default Card

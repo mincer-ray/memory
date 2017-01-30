@@ -10,7 +10,6 @@ class Board extends React.Component {
     super(props)
 
     this.state = {
-      values: props.cards,
       cards: [],
       flippedCard: null,
       clicksOn: true,
@@ -18,9 +17,6 @@ class Board extends React.Component {
       attempts: 0,
       gameOver: false,
       timerRunning: false,
-      database: props.database,
-      gameType: props.gameType,
-      cardBack: props.cardBack,
     }
 
     this.handleCard = this.handleCard.bind(this)
@@ -29,7 +25,7 @@ class Board extends React.Component {
   }
 
   componentWillMount() {
-    this.generateCards(this.state.values)
+    this.generateCards(this.props.cards)
   }
 
   generateCards(values) {
@@ -41,7 +37,7 @@ class Board extends React.Component {
           key={`${i}${value.charCodeAt(0)}`}
           value={value}
           handleCard={this.handleCard}
-          cardBack={this.state.cardBack}
+          cardBack={this.props.cardBack}
         />,
       )
     })
@@ -95,11 +91,24 @@ class Board extends React.Component {
 
   recordScore() {
     const name = prompt('enter name for high score').slice(0, 10)
-    this.state.database.ref(`scores/${this.state.gameType}`).push({
+    this.props.database.ref(`scores/${this.props.gameType}`).push({
       name,
       time: this.state.finalTime,
       attempts: this.state.attempts,
     })
+
+    this.props.resetGame()
+  }
+
+  submitScore() {
+    if (this.state.gameOver) {
+      return (
+        <button className={styles.button} onClick={this.recordScore}>Submit Score</button>
+      )
+    }
+    return (
+      <div />
+    )
   }
 
   render() {
@@ -114,10 +123,18 @@ class Board extends React.Component {
         <div className={styles.board}>
           { this.state.cards }
         </div>
-        <button onClick={this.recordScore}>score</button>
+        { this.submitScore() }
       </div>
     )
   }
+}
+
+Board.propTypes = {
+  cards: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+  cardBack: React.PropTypes.string.isRequired,
+  database: React.PropTypes.object.isRequired,
+  gameType: React.PropTypes.string.isRequired,
+  resetGame: React.PropTypes.func.isRequired,
 }
 
 export default Board

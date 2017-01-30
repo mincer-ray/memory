@@ -56,12 +56,12 @@ class Game extends React.Component {
   }
 
   getScores() {
-    http.get('https://nytmemory.firebaseio.com/scores/short.json?orderBy="time"&limitToLast=5&print=pretty',
+    http.get('https://nytmemory.firebaseio.com/scores/short.json?orderBy="time"&limitToFirst=5&print=pretty',
     (response) => {
       response.setEncoding('utf8')
       response.on('data', data => this.setState({ shortScores: JSON.parse(data) }))
     })
-    http.get('https://nytmemory.firebaseio.com/scores/long.json?orderBy="time"&limitToLast=5&print=pretty',
+    http.get('https://nytmemory.firebaseio.com/scores/long.json?orderBy="time"&limitToFirst=5&print=pretty',
     (response) => {
       response.setEncoding('utf8')
       response.on('data', data => this.setState({ longScores: JSON.parse(data) }))
@@ -91,12 +91,12 @@ class Game extends React.Component {
     if (this.state.gameStart) {
       return (
         <div className={styles.gameOn}>
-          <h1 className={styles.header}>Memory</h1>
           <Board
             cards={this.state.deck}
             database={database}
             gameType={this.state.gameType}
             cardBack={this.state.cardBack}
+            resetGame={this.resetGame}
           />
           <button className={styles.button} onClick={this.resetGame}>Reset</button>
         </div>
@@ -104,16 +104,12 @@ class Game extends React.Component {
     } else if (this.state.gameData) {
       return (
         <div className={styles.container}>
-          <div className={styles.customCard}>
-            <p className={styles.text}>Upload a custom card back picture!</p>
-            <img className={styles.cardPreview} src={this.state.cardBack} alt="preview" id="preview" />
-            <label>
-              <input type="file" onChange={this.updateCard} />
-              Choose a file
-            </label>
+          <div className={styles.highScores}>
+            <p className={styles.text}>High Score Boards</p>
+            <Scores scores={this.state.shortScores} title={'Short Scores'} />
+            <Scores scores={this.state.longScores} title="Long Scores" />
           </div>
           <div className={styles.game}>
-            <h1 className={styles.header}>Memory</h1>
             <p className={styles.text}>New Game</p>
             <button
               className={styles.button}
@@ -126,9 +122,13 @@ class Game extends React.Component {
               onClick={this.newGame}
             >Long</button>
           </div>
-          <div className={styles.highScores}>
-            <Scores scores={this.state.shortScores} title={'Short Scores'} />
-            <Scores scores={this.state.longScores} title="Long Scores" />
+          <div className={styles.customCard}>
+            <p className={styles.text}>Upload a custom card</p>
+            <img className={styles.cardPreview} src={this.state.cardBack} alt="" />
+            <label>
+              <input type="file" onChange={this.updateCard} />
+              Choose a file
+            </label>
           </div>
         </div>
       )
