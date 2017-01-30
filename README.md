@@ -1,6 +1,6 @@
 # Memory
 
-Memory is a web game built with React using the NYT kyt toolkit. The app can be used by downloading the .zip, running `npm run dev`, and viewing `http://localhost:3000/`
+Memory is a web game built with React using the NYT kyt toolkit. The app can be used by downloading the .zip, running `npm install` and `npm run dev`, and viewing `http://localhost:3000/`
 
 ## Implementation
 
